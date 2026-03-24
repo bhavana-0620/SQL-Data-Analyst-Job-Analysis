@@ -11,7 +11,11 @@ This project analyzes the data analyst job market using SQL, focusing on identif
 
 The goal is to provide **data-driven guidance** for aspiring data analysts on which skills to prioritize for career growth.
 
-📊 **Dataset used:** [https://drive.google.com/drive/folders/1lUWa3KBU6z7cSb1P_hBM7zDzoKY8IstN](url)
+
+## 📂 Dataset
+
+🔗 [Download Dataset](your_drive_link_here)
+
 
 🔗 **SQL Queries:** [project_sql folder](./project_sql)
 
@@ -69,7 +73,7 @@ The dataset follows a **star-schema-like structure**:
 
 ---
 
-### 🔹 1. Top Paying Data Analyst Jobs  
+### 🔹 1. Top Paying Data Analyst Jobs 
 
 To accurately identify top-paying roles:
 
@@ -85,6 +89,10 @@ To accurately identify top-paying roles:
 - High-paying roles often include **hybrid skill expectations**  
 - Some job titles include advanced responsibilities beyond traditional analysis  
 
+
+![Top Paying Roles](assets/1_top_paying_roles.png)
+*Bar graph visualizing the salary for the top 10 salaries for data analysts*
+
 ---
 
 ### 🔹 2. Skills Required for Top-Paying Jobs  
@@ -97,6 +105,10 @@ To accurately identify top-paying roles:
 - High-paying roles require **multi-skill combinations**  
 - SQL is a baseline skill, while **Python and cloud tools** increase salary potential  
 - Advanced roles combine **analysis + data engineering capabilities**
+
+  
+![Top Paying Skills](assets/2_top_paying_roles_skills.png)
+*Bar graph visualizing the count of skills for the top 10 paying jobs for data analysts*
 
 ---
 
