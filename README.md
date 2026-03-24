@@ -10,8 +10,9 @@ This project analyzes the data analyst job market using SQL, focusing on identif
 The goal is to provide data-driven guidance for aspiring data analysts on which skills to prioritize for career growth.
 
 📊 dataset used: [https://drive.google.com/drive/folders/1lUWa3KBU6z7cSb1P_hBM7zDzoKY8IstN?usp=drive_link](url)
+
 🔗 SQL Queries: [SQL_PROJECT_Folder](/project_sql/)
-💡sql queries? check them out here: [SQL_PROJECT_Folder](/project_sql/)
+
 
 📌 Background
 
