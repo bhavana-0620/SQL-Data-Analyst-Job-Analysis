@@ -1,7 +1,10 @@
 /*
-Question: What skills are required for the top-paying data analyst jobs?
-- Use the top 10 highest-paying Data Analyst jobs from first query
-- Add the specific skills required for these roles
+-- 02_top_paying_job_skills.sql
+
+Skills required for the top-paying data analyst jobs
+- Top 10 highest-paying Data Analyst jobs from first query
+- Specific skills required for these roles
+
 */
 
 WITH ranked_jobs AS (
