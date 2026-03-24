@@ -1,4 +1,6 @@
 /*
+-- 03_top_demanded_skills.sql
+
 Question: What are the most in-demand skills for data analysts?
 - Join job postings to inner join table similar to query 2
 - Identify the top 5 in-demand skills for a data analyst
@@ -7,43 +9,31 @@ Question: What are the most in-demand skills for data analysts?
   providing insights into the most valuable skills for job seekers.
 */
 
-/*
-WITH remote_job_skills AS (
-    SELECT
-        skill_id,
-        COUNT(*) AS skill_count
-    FROM skills_job_dim AS skills_to_job
-    INNER JOIN job_postings_fact AS job_postings ON
-        job_postings.job_id = skills_to_job.job_id
+WITH filtered_jobs AS (
+    SELECT job_id
+    FROM job_postings_fact
     WHERE
-        job_postings.job_work_from_home = True AND
-        job_postings.job_title_short = 'Data Analyst'
-    GROUP BY
-        skill_id
+        job_title LIKE '%Data Analyst%'
+        AND job_title NOT LIKE '%Director%'
+        AND job_title NOT LIKE '%Principal%'
+        AND job_title NOT LIKE '%Manager%'
+),
+
+total_jobs AS (
+    SELECT COUNT(DISTINCT job_id) AS total
+    FROM filtered_jobs
 )
 
-SELECT
-    skills.skill_id,
-    skills AS skill_name,
-    skill_count
-FROM remote_job_skills
-INNER JOIN skills_dim AS skills ON skills.skill_id = skill_id
-ORDER BY
-    skill_count DESC
-LIMIT 5;
-*/
-
 SELECT 
-    skills,
-    count(skills_job_dim.job_id) as demand_count
-FROM job_postings_fact
-INNER JOIN skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id
-INNER JOIN skills_dim on skills_job_dim.skill_id = skills_dim.skill_id
-WHERE 
-    job_title_short = 'Data Analyst' AND
-    job_work_from_home = True
-GROUP BY
-    skills 
-ORDER BY 
-    demand_count DESC
-LIMIT 5
+    sd.skills,
+    COUNT(DISTINCT sj.job_id) AS demand_count,
+    COUNT(DISTINCT sj.job_id) * 100.0 / tj.total AS demand_percentage
+FROM filtered_jobs fj
+JOIN skills_job_dim sj 
+    ON fj.job_id = sj.job_id
+JOIN skills_dim sd 
+    ON sj.skill_id = sd.skill_id
+CROSS JOIN total_jobs tj
+GROUP BY sd.skills, tj.total
+ORDER BY demand_count DESC
+LIMIT 5;
