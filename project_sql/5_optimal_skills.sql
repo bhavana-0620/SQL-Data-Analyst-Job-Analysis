@@ -1,42 +1,44 @@
+-- 05_optimal_skills.sql
 
-with skills_demand as(
+/*
+Most optimal skills (high demand + high salary)
+*/
+
+WITH filtered_jobs AS (
     SELECT 
-    skills_dim.skill_id,
-    skills_dim.skills,
-    count(skills_job_dim.job_id) as demand_count
-FROM job_postings_fact
-INNER JOIN skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id
-INNER JOIN skills_dim on skills_job_dim.skill_id = skills_dim.skill_id
-WHERE 
-    job_title_short = 'Data Analyst' 
-    and salary_year_avg is NOT NULL
-    and job_work_from_home = True
-GROUP BY
-    skills_dim.skill_id
-), average_salary as(
-SELECT 
-    skills_job_dim.skill_id,
-    round(avg(salary_year_avg), 0) as avg_salary
-FROM job_postings_fact
-INNER JOIN skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id
-INNER JOIN skills_dim on skills_job_dim.skill_id = skills_dim.skill_id
-WHERE 
-    job_title_short = 'Data Analyst' 
-    and salary_year_avg is NOT NULL
-    AND job_work_from_home = True
-GROUP BY
-    skills_job_dim.skill_id
+        job_id,
+        salary_year_avg
+    FROM job_postings_fact
+    WHERE 
+        salary_year_avg IS NOT NULL
+        AND job_title LIKE '%Data Analyst%'
+        AND job_title NOT LIKE '%Director%'
+        AND job_title NOT LIKE '%Principal%'
+        AND job_title NOT LIKE '%Manager%'
+),
+
+skill_stats AS (
+    SELECT 
+        sd.skill_id,
+        sd.skills,
+        COUNT(DISTINCT fj.job_id) AS demand_count,
+        AVG(fj.salary_year_avg) AS avg_salary
+    FROM filtered_jobs fj
+    JOIN skills_job_dim sj 
+        ON fj.job_id = sj.job_id
+    JOIN skills_dim sd 
+        ON sj.skill_id = sd.skill_id
+    GROUP BY sd.skill_id, sd.skills
 )
 
 SELECT 
-    skills_demand.skill_id,
-    skills_demand.skills,
+    skill_id,
+    skills,
     demand_count,
-    avg_salary
-FROM
-    skills_demand
-inner join average_salary on skills_demand.skill_id = average_salary.skill_id
-ORDER BY
+    ROUND(avg_salary, 0) AS avg_salary
+FROM skill_stats
+WHERE demand_count >= 5  
+ORDER BY 
     demand_count DESC,
     avg_salary DESC
-LIMIT 25
+    limit 25;
