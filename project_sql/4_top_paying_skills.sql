@@ -2,8 +2,8 @@
 -- 04_top_paying_skills.sql
 
 Top skills based on salary
-- Look at the average salary associated with each skill for Data Analyst positions
-- Focuses on roles with specified salaries, regardless of location
+- Average salary associated with each skill for Data Analyst positions
+- Roles with specified salaries, regardless of location
 */
 
 WITH filtered_jobs AS (
